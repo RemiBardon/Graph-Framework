@@ -1,7 +1,6 @@
 package AdjacencyMatrix;
 
 import GraphAlgorithms.GraphTools;
-import Nodes.AbstractNode;
 import Nodes.UndirectedNode;
 
 public class AdjacencyMatrixUndirectedValuedGraph extends AdjacencyMatrixUndirectedGraph {
@@ -66,26 +65,19 @@ public class AdjacencyMatrixUndirectedValuedGraph extends AdjacencyMatrixUndirec
 		super.addEdge(x,y);
 		// TODO: Complete
 	}
-	
+
 	public String toString() {
-		StringBuilder s = new StringBuilder(super.toString() + "\n Matrix of Costs: \n");
-		for (int[] matrixCost : this.matrixCosts) {
-			for (int i : matrixCost) {
-				s.append(i).append(" ");
-			}
-			s.append("\n");
-		}
-		s.append("\n");
-		return s.toString();
+		return "Matrix of Costs:\n" + GraphTools.matrixToString(this.matrixCosts, 2, 2);
 	}
-	
-	
+
 	public static void main(String[] args) {
-		int[][] matrix = GraphTools.generateGraphData(10, 20, true, true, false, 100001);
-        int[][] matrixValued = GraphTools.generateValuedGraphData(10, false, true, true, false, 100001);
+		final int[][] matrix = GraphTools.generateGraphData(10, 20, true, true, false, 100001);
+		final int[][] matrixValued = GraphTools.generateValuedGraphData(10, false, true, true, false, 100001);
 		GraphTools.afficherMatrix(matrix);
-		AdjacencyMatrixUndirectedValuedGraph am = new AdjacencyMatrixUndirectedValuedGraph(matrix, matrixValued);
+
+		final AdjacencyMatrixUndirectedValuedGraph am = new AdjacencyMatrixUndirectedValuedGraph(matrix, matrixValued);
 		System.out.println(am);
+
 		// TODO: Complete
 	}
 

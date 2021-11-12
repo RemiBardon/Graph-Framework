@@ -1,6 +1,7 @@
 package GraphAlgorithms;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GraphTools {
 
@@ -193,16 +194,32 @@ public class GraphTools {
 	/**
 	 * @param m a matrix
 	 */
-	public static void afficherMatrix(int[][] m){
-		for(int[] line : m){
-			for(int v : line){
-				System.out.print(v+" ");
-			}
-			System.out.println();
-		}
-		System.out.println();
+	public static void afficherMatrix(final int[][] m) {
+		System.out.println(matrixToString(m, 1, 0));
 	}
 
+	/**
+	 * @param m A matrix.
+	 * @param digits The number of digits per number
+	 *               (e.g. {@code 1} will show {@code "-5␣0␣5␣10"},
+	 *               {@code 2} will show {@code "-5␣␣0␣␣5␣10"}
+	 *               and {@code 3} will show {@code "␣-5␣␣␣0␣␣␣5␣␣10"}).
+	 * @param indent The number of leading spaces on each line.
+	 */
+	public static String matrixToString(final int[][] m, final int digits, final int indent) {
+		final String format = "%" + digits + "d";
+		return Arrays.stream(m)
+			.map(row -> Arrays.stream(row)
+				// Format numbers to take the desired number of digits
+				.mapToObj(c -> String.format(format, c))
+				// Join columns with spaces
+				.collect(Collectors.joining(" "))
+			)
+			// Indent
+			.map(row -> String.join("", Collections.nCopies(indent, " ")) + row)
+			// Join rows with `\n`s
+			.collect(Collectors.joining("\n"));
+	}
 
 	/**
 	 * @param mat, a matrix
@@ -220,18 +237,22 @@ public class GraphTools {
 		return mat;
 	}
 
-
-	
 	public static void main(String[] args) {
-		int[][] mat = generateGraphData(10, 20, false, false, false, 100001);
+		final int[][] mat = generateGraphData(10, 20, false, false, false, 100001);
+		System.out.println("Matrix 1:");
 		afficherMatrix(mat);
-		int[][] mat2 = generateGraphData(10, 20, false, false, false, 100002);
-		afficherMatrix(mat2);
-		int[][] mat3 = generateGraphData(10, 20, false, true, true, 100003);
-		afficherMatrix(mat3);
-		int[][] matVal = generateValuedGraphData(10, false, false, true, true, 100007);
-		afficherMatrix(matVal);
 
+		final int[][] mat2 = generateGraphData(10, 20, false, false, false, 100002);
+		System.out.println("\nMatrix 2:");
+		afficherMatrix(mat2);
+
+		final int[][] mat3 = generateGraphData(10, 20, false, true, true, 100003);
+		System.out.println("\nMatrix 3:");
+		afficherMatrix(mat3);
+
+		final int[][] matVal = generateValuedGraphData(10, false, false, true, true, 100007);
+		System.out.println("\nValued matrix:");
+		afficherMatrix(matVal);
 	}
 
 }

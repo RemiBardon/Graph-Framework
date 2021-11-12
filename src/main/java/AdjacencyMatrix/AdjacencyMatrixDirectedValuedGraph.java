@@ -1,7 +1,6 @@
 package AdjacencyMatrix;
 
 import GraphAlgorithms.GraphTools;
-import Nodes.AbstractNode;
 import Nodes.DirectedNode;
 
 public class AdjacencyMatrixDirectedValuedGraph extends AdjacencyMatrixDirectedGraph {
@@ -63,24 +62,19 @@ public class AdjacencyMatrixDirectedValuedGraph extends AdjacencyMatrixDirectedG
 		super.addArc(from,to);
 		// TODO: Complete
 	}
-	
+
 	public String toString() {
-		StringBuilder s = new StringBuilder(super.toString() + "\n Matrix of Costs: \n");
-		for (int[] matrixCost : this.matrixCosts) {
-			for (int i : matrixCost) {
-				s.append(i).append(" ");
-			}
-			s.append("\n");
-		}
-		s.append("\n");
-		return s.toString();
+		return "Matrix of Costs:\n" + GraphTools.matrixToString(this.matrixCosts, 2, 2);
 	}
 
 	public static void main(String[] args) {
-		int[][] matrix = GraphTools.generateGraphData(10, 30, false, false, false, 100001);
-        int[][] matrixValued = GraphTools.generateValuedGraphData(10, false, false, true, false, 100001);
-		AdjacencyMatrixDirectedValuedGraph am = new AdjacencyMatrixDirectedValuedGraph(matrix, matrixValued);
+		final int[][] matrix = GraphTools.generateGraphData(10, 30, false, false, false, 100001);
+		final int[][] matrixValued = GraphTools.generateValuedGraphData(10, false, false, true, false, 100001);
+
+		final AdjacencyMatrixDirectedValuedGraph am = new AdjacencyMatrixDirectedValuedGraph(matrix, matrixValued);
 		System.out.println(am);
+
 		// TODO: Complete
 	}
+
 }

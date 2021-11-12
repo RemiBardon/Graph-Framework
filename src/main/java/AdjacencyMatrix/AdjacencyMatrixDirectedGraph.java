@@ -2,12 +2,12 @@ package AdjacencyMatrix;
 
 import Abstraction.AbstractMatrixGraph;
 import GraphAlgorithms.GraphTools;
-import Nodes.AbstractNode;
 import Nodes.DirectedNode;
 import Abstraction.IDirectedGraph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represents the directed graphs structured by an adjacency matrix.
@@ -120,30 +120,23 @@ public class AdjacencyMatrixDirectedGraph extends AbstractMatrixGraph<DirectedNo
 
 	@Override
 	public String toString(){
-		StringBuilder s = new StringBuilder("Adjacency Matrix: \n");
-		for (int[] ints : matrix) {
-			for (int anInt : ints) {
-				s.append(anInt).append(" ");
-			}
-			s.append("\n");
-		}
-		s.append("\n");
-		return s.toString();
+		return "Adjacency Matrix:\n" + GraphTools.matrixToString(this.matrix, 1, 2);
 	}
 
 	public static void main(String[] args) {
-		int[][] matrix2 = GraphTools.generateGraphData(10, 20, false, false, false, 100001);
-		AdjacencyMatrixDirectedGraph am = new AdjacencyMatrixDirectedGraph(matrix2);
+		final int[][] matrix2 = GraphTools.generateGraphData(10, 20, false, false, false, 100001);
+		final AdjacencyMatrixDirectedGraph am = new AdjacencyMatrixDirectedGraph(matrix2);
 		System.out.println(am);
-		List<Integer> t = am.getSuccessors(new DirectedNode(1));
-		for (Integer integer : t) {
-			System.out.print(integer + ", ");
-		}
-		System.out.println();
-		List<Integer> t2 = am.getPredecessors(new DirectedNode(2));
-		for (Integer integer : t2) {
-			System.out.print(integer + ", ");
-		}
+
+		final List<Integer> t = am.getSuccessors(new DirectedNode(1));
+		final String successors = t.stream().map(Object::toString).collect(Collectors.joining(", "));
+		System.out.println("Successors of 1: " + successors);
+
+		final List<Integer> t2 = am.getPredecessors(new DirectedNode(2));
+		final String predecessors = t2.stream().map(Object::toString).collect(Collectors.joining(", "));
+		System.out.println("Predecessors of 2: " + predecessors);
+
 		// TODO: Complete
 	}
+
 }
