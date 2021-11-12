@@ -9,6 +9,7 @@ import Abstraction.IUndirectedGraph;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represents the undirected graphs structured by an adjacency matrix.
@@ -87,43 +88,43 @@ public class AdjacencyMatrixUndirectedGraph extends AbstractMatrixGraph<Undirect
 		// A completer
 	}
 
-	
 	/**
      * @return the adjacency matrix representation int[][] of the graph
      */
 	public int[][] toAdjacencyMatrix() {
 		return this.matrix;
 	}
-	
+
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder("Adjacency Matrix: \n");
-		for (int[] ints : this.matrix) {
-			for (int anInt : ints) {
-				s.append(anInt).append(" ");
-			}
-			s.append("\n");
-		}
-		s.append("\n");
-		return s.toString();
+		return "Adjacency Matrix:\n" + GraphTools.matrixToString(this.matrix, 1, 2);
 	}
 
 	public static void main(String[] args) {
-		int[][] mat2 = GraphTools.generateGraphData(10, 35, false, true, false, 100001);
+		final int[][] mat2 = GraphTools.generateGraphData(10, 35, false, true, false, 100001);
+		System.out.println("Matrix:");
 		GraphTools.afficherMatrix(mat2);
-		AdjacencyMatrixUndirectedGraph am = new AdjacencyMatrixUndirectedGraph(mat2);
+
+		final AdjacencyMatrixUndirectedGraph am = new AdjacencyMatrixUndirectedGraph(mat2);
 		System.out.println(am);
-		System.out.println("N = "+am.getNbNodes()+ "\n M = "+am.getNbEdges());
-		List<Integer> t2 = am.getNeighbours(new UndirectedNode(2));
-		for (Integer integer : t2) {
-			System.out.print(integer + ", ");
-		}
-		am.isEdge(new UndirectedNode(2), new UndirectedNode(5));
-		for(int i = 0; i<3;i++)
+		System.out.println("N = "+am.getNbNodes()+ ", M = "+am.getNbEdges());
+
+		final List<Integer> t2 = am.getNeighbours(new UndirectedNode(2));
+		final String neighbors = t2.stream().map(Object::toString).collect(Collectors.joining(", "));
+		System.out.println("\nNeighbors of 2: " + neighbors);
+
+		System.out.println("2–5? " + am.isEdge(new UndirectedNode(2), new UndirectedNode(5)));
+
+		System.out.println("\nAdding 3 edges between 2 and 5…");
+		for(int i = 0; i<3; i++)
 			am.addEdge(new UndirectedNode(2), new UndirectedNode(5));
 		System.out.println(am);
+
+		System.out.println("\nRemoving 1 edge between 2 and 5…");
 		am.removeEdge(new UndirectedNode(2), new UndirectedNode(5));
 		System.out.println(am);
+
 		// A completer
 	}
+
 }
