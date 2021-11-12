@@ -31,7 +31,7 @@ public class BinaryHeapEdge {
 	 * @param val the edge weight
 	 */
     public void insert(UndirectedNode from, UndirectedNode to, int val) {
-    	// To complete
+    	// TODO: Complete
     }
 
     
@@ -42,7 +42,7 @@ public class BinaryHeapEdge {
 	 * 
 	 */
     public Triple<UndirectedNode,UndirectedNode,Integer> remove() {
-    	// To complete
+    	// TODO: Complete
     	return null;
         
     }
@@ -59,13 +59,13 @@ public class BinaryHeapEdge {
         if (isLeaf(src)) { // the leaf is a stopping case, then we return a default value
             return Integer.MAX_VALUE;
         } else {
-        	// To complete
+        	// TODO: Complete
         	return Integer.MAX_VALUE;
         }
     }
 
     private boolean isLeaf(int src) {
-    	// A completer
+    	// TODO: Complete
     	return false;
     }
 
@@ -171,7 +171,7 @@ public class BinaryHeapEdge {
             jarjarBin.insert(new UndirectedNode(k), new UndirectedNode(k+30), rand);            
             k--;
         }
-        // A completer
+        // TODO: Complete
         
         System.out.println(jarjarBin.test());
     }

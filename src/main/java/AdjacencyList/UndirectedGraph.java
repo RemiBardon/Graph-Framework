@@ -74,21 +74,21 @@ public class UndirectedGraph extends AbstractListGraph<UndirectedNode> implement
     @Override
     public boolean isEdge(UndirectedNode x, UndirectedNode y) {  
     	return getNodeOfList(x).getNeighbours().containsKey(getNodeOfList(y));
-        // A completer
+        // TODO: Complete
     	//return true;
     }
 
     @Override
     public void removeEdge(UndirectedNode x, UndirectedNode y) {
     	if(isEdge(x,y)){
-    		// A completer
+    		// TODO: Complete
     	}
     }
 
     @Override
     public void addEdge(UndirectedNode x, UndirectedNode y) {
     	if(!isEdge(x,y)){
-    		// A completer
+    		// TODO: Complete
     	}
     }
 
@@ -119,7 +119,7 @@ public class UndirectedGraph extends AbstractListGraph<UndirectedNode> implement
     @Override
     public int[][] toAdjacencyMatrix() {
         int[][] matrix = new int[order][order];
-        // A completer
+        // TODO: Complete
         return matrix;
     }
 
@@ -143,7 +143,7 @@ public class UndirectedGraph extends AbstractListGraph<UndirectedNode> implement
         UndirectedGraph al = new UndirectedGraph(mat);
         System.out.println(al);
         System.out.println(al.isEdge(new UndirectedNode(2), new UndirectedNode(5)));
-        // A completer
+        // TODO: Complete
     }
 
 }

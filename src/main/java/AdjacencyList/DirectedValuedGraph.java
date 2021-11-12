@@ -39,7 +39,7 @@ public class DirectedValuedGraph extends DirectedGraph {
      * Adds the arc (from,to) with cost  if it is not already present in the graph
      */
     public void addArc(DirectedNode from, DirectedNode to, int cost) {
-    	// A completer      
+    	// TODO: Complete      
     }
     
     @Override
@@ -64,7 +64,7 @@ public class DirectedValuedGraph extends DirectedGraph {
         GraphTools.afficherMatrix(matrixValued);
         DirectedValuedGraph al = new DirectedValuedGraph(matrixValued);
         System.out.println(al);
-        // A completer
+        // TODO: Complete
     }
 	
 }

@@ -69,18 +69,18 @@ public class DirectedGraph extends AbstractListGraph<DirectedNode> implements ID
 
     @Override
     public boolean isArc(DirectedNode from, DirectedNode to) {
-    	// A completer
+    	// TODO: Complete
     	return false;
     }
 
     @Override
     public void removeArc(DirectedNode from, DirectedNode to) {
-    	// A completer
+    	// TODO: Complete
     }
 
     @Override
     public void addArc(DirectedNode from, DirectedNode to) {
-    	// A completer
+    	// TODO: Complete
     }
 
     //--------------------------------------------------
@@ -122,7 +122,7 @@ public class DirectedGraph extends AbstractListGraph<DirectedNode> implements ID
     @Override
     public IDirectedGraph computeInverse() {
         DirectedGraph g = new DirectedGraph(this);
-        // A completer
+        // TODO: Complete
         return g;
     }
     
@@ -145,6 +145,6 @@ public class DirectedGraph extends AbstractListGraph<DirectedNode> implements ID
         GraphTools.afficherMatrix(Matrix);
         DirectedGraph al = new DirectedGraph(Matrix);
         System.out.println(al);
-        // A completer
+        // TODO: Complete
     }
 }

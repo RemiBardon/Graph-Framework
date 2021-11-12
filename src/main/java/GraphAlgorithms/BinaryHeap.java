@@ -28,11 +28,11 @@ public class BinaryHeap {
     }
 
     public void insert(int element) {
-    	// A completer
+    	// TODO: Complete
     }
 
     public int remove() {
-    	// A completer
+    	// TODO: Complete
     	return 0;
     }
 
@@ -40,7 +40,7 @@ public class BinaryHeap {
         if (isLeaf(src)) { // the leaf is a stopping case, then we return a default value
             return Integer.MAX_VALUE;
         } else {
-        	// A completer
+        	// TODO: Complete
         	return Integer.MAX_VALUE;
         }
     }
@@ -53,7 +53,7 @@ public class BinaryHeap {
 	 * 
 	 */	
     private boolean isLeaf(int src) {
-    	// A completer
+    	// TODO: Complete
     	return false;
     }
 
@@ -108,7 +108,7 @@ public class BinaryHeap {
             jarjarBin.insert(rand);            
             k--;
         }
-     // A completer
+     // TODO: Complete
         System.out.println("\n" + jarjarBin);
         System.out.println(jarjarBin.test());
     }

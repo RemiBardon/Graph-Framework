@@ -67,7 +67,7 @@ public class AdjacencyMatrixUndirectedGraph extends AbstractMatrixGraph<Undirect
 	
 	@Override
 	public boolean isEdge(UndirectedNode x, UndirectedNode y) {
-		// A completer
+		// TODO: Complete
 		return true;		
 	}
 	
@@ -76,7 +76,7 @@ public class AdjacencyMatrixUndirectedGraph extends AbstractMatrixGraph<Undirect
      */
 	@Override
 	public void removeEdge(UndirectedNode x, UndirectedNode y) {
-		// A completer
+		// TODO: Complete
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class AdjacencyMatrixUndirectedGraph extends AbstractMatrixGraph<Undirect
      */
 	@Override
 	public void addEdge(UndirectedNode x, UndirectedNode y) {
-		// A completer
+		// TODO: Complete
 	}
 
 	
@@ -124,6 +124,6 @@ public class AdjacencyMatrixUndirectedGraph extends AbstractMatrixGraph<Undirect
 		System.out.println(am);
 		am.removeEdge(new UndirectedNode(2), new UndirectedNode(5));
 		System.out.println(am);
-		// A completer
+		// TODO: Complete
 	}
 }

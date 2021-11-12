@@ -39,7 +39,7 @@ public class UndirectedValuedGraph extends UndirectedGraph{
      * Adds the edge (from,to) with cost if it is not already present in the graph
      */
     public void addEdge(UndirectedNode x, UndirectedNode y, int cost) {
-    	// A completer
+    	// TODO: Complete
     }
     
     @Override
@@ -63,6 +63,6 @@ public class UndirectedValuedGraph extends UndirectedGraph{
         GraphTools.afficherMatrix(matrixValued);
         UndirectedValuedGraph al = new UndirectedValuedGraph(matrixValued);
         System.out.println(al);
-        // A completer
+        // TODO: Complete
     }
 }

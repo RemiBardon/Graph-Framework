@@ -42,7 +42,7 @@ public class GraphToolsList  extends GraphTools {
 	// 				Methods
 	// ------------------------------------------
 
-	// A completer
+	// TODO: Complete
 
 
 	public static void main(String[] args) {
@@ -51,6 +51,6 @@ public class GraphToolsList  extends GraphTools {
 		DirectedGraph al = new DirectedGraph(Matrix);
 		System.out.println(al);
 
-		// A completer
+		// TODO: Complete
 	}
 }
