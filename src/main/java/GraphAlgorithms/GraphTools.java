@@ -1,15 +1,13 @@
 package GraphAlgorithms;
 
-import Abstraction.AbstractListGraph;
-import Abstraction.IGraph;
-import Abstraction.IUndirectedGraph;
 import AdjacencyList.DirectedGraph;
-import AdjacencyMatrix.AdjacencyMatrixUndirectedGraph;
+import AdjacencyList.UndirectedGraph;
 import Nodes.AbstractNode;
 import Nodes.DirectedNode;
 import Nodes.UndirectedNode;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -296,25 +294,72 @@ public class GraphTools {
 		final Function<Node, T> function,
 		final Function<Node, Set<Node>> nextNodes
 	) {
-		Set<Node> visited = new LinkedHashSet<>();
+		Set<Node> visited = new HashSet<>();
 		visited.add(start);
 
 		Stack<Node> toVisit = new Stack<>();
 		toVisit.push(start);
 
 		Node actual;
+		System.out.print("Running DFS…");
 		while (!toVisit.empty()) {
 			actual = toVisit.pop();
-			function.apply(actual);
 
 			for (final Node next: nextNodes.apply(actual)) {
 				if (!visited.contains(next)) {
+					System.out.print("👀" + next + " ");
 					toVisit.push(next);
 					visited.add(next);
+				} else {
+					System.out.print("✋" + next + " ");
 				}
 			}
+
+			System.out.print("⛏" + actual + " ");
+			function.apply(actual);
 		}
+		System.out.print("\n");
 	}
+
+
+	public static <Node extends AbstractNode, T> void dfs2(
+			final Node start,
+			final Function<Node, T> function,
+			final Function<Node, Set<Node>> nextNodes
+	) {
+
+		List<Boolean> mark = new ArrayList<>();
+
+		for(int i =0;i<200;i++){mark.add(i,false);}
+
+		mark.set(start.getLabel(), true);
+
+		Stack<Node> toVisit = new Stack<>();
+		toVisit.add(start);
+
+		Node actual;
+		System.out.println("Running DFS…");
+
+		while (!toVisit.empty()) {
+			actual = toVisit.pop();
+			for (final Node next: nextNodes.apply(actual)) {
+					if (!mark.get(next.getLabel())){
+						System.out.println(next.getLabel() );
+						mark.set(next.getLabel(),true);
+						toVisit.push(next);
+					}
+			}
+
+		}
+		System.out.print("\n");
+	}
+
+	public static List<UndirectedNode> dfs2(final UndirectedNode start) {
+		final ArrayList<UndirectedNode> stack = new ArrayList<>();
+		dfs2(start, stack::add, node -> node.getNeighbours().keySet());
+		return stack;
+	}
+
 
 	public static <T> void dfs(final UndirectedNode start, final Function<UndirectedNode, T> function) {
 		dfs(start, function, node -> node.getNeighbours().keySet());
@@ -334,6 +379,70 @@ public class GraphTools {
 		final ArrayList<DirectedNode> visitOrder = new ArrayList<>();
 		dfs(start, visitOrder::add);
 		return visitOrder;
+	}
+
+	public static void explorerSommet(final UndirectedNode s, final Set<UndirectedNode> a) {
+		a.add(s);
+		for (final UndirectedNode t: s.getNeighbours().keySet()) {
+			if (!a.contains(t)) {
+				explorerSommet(t, a);
+			}
+		}
+	}
+
+	public static <S, T> void explorerSommet(
+		final UndirectedNode s,
+		final Set<UndirectedNode> a,
+		final Function<UndirectedNode, S> before,
+		final Function<UndirectedNode, T> after
+	) {
+		System.out.println("s1.1=" + s);
+		a.add(s);
+		for (final UndirectedNode t: s.getNeighbours().keySet()) {
+			System.out.println("s2=" + t);
+			if (!a.contains(t)) {
+				System.out.println(t + " not visited");
+				//before.apply(t);
+				explorerSommet(t, a);
+				//after.apply(t);
+			}
+		}
+	}
+
+	public static void explorerGraphe(final UndirectedGraph g) {
+		Set<UndirectedNode> atteint = new HashSet<>();
+		for (final UndirectedNode s: g.getNodes()) {
+			if (!atteint.contains(s)) {
+				explorerSommet(s, atteint);
+			}
+		}
+	}
+
+	public static LinkedHashMap<UndirectedNode, Integer> explorerGrapheAvecFin(final UndirectedGraph g) {
+		LinkedHashMap<UndirectedNode, Integer> fins = new LinkedHashMap<>();
+		Set<UndirectedNode> atteint = new HashSet<>();
+
+		AtomicInteger compteur = new AtomicInteger();
+		for (final UndirectedNode s: g.getNodes()) {
+			System.out.println("s1=" + s);
+			if (!atteint.contains(s)) {
+				explorerSommet(
+					s,
+					atteint,
+					s2 -> {
+						System.out.println("Before " + s2);
+						return compteur.getAndIncrement();
+					},
+					s2 -> {
+						System.out.println("After " + s2);
+						compteur.getAndIncrement();
+						return fins.put(s2, compteur.get());
+					}
+				);
+			}
+		}
+
+		return fins;
 	}
 
 	public static void main(String[] args) {
@@ -370,6 +479,37 @@ public class GraphTools {
 		final DirectedNode node7 = g4.getNodes().get(7);
 		System.out.println("DFS (7): " + dfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
 		System.out.println("BFS (7): " + bfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+		final int[][] mat5 = generateGraphData(10, 20, false, true, true, 100_010);
+		final UndirectedGraph g5 = new UndirectedGraph(mat5);
+		System.out.println("\nGraph 5:");
+		System.out.println(g5);
+		System.out.println("Nodes: " + g5.getNodes().stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+		afficherMatrix(mat5);
+		System.out.println("DFS (0): " + dfs(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
+		System.out.println("BFS (0): " + bfs(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
+		final LinkedHashMap<UndirectedNode, Integer> fins = explorerGrapheAvecFin(g5);
+		System.out.println("\nFins: " + fins);
+
+		System.out.println("DFS2 (0): " + dfs2(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+
+		int[][] testAdj = {
+			{0, 1, 1, 0, 0, 0, 0},
+			{1, 0, 0, 1, 1, 0, 0},
+			{1, 0, 0, 0, 0, 1, 1},
+			{0, 1, 0, 0, 0, 0, 0},
+			{0, 1, 0, 0, 0, 0, 0},
+			{0, 0, 1, 0, 0, 0, 0},
+			{0, 0, 1, 0, 0, 0, 0}
+		};
+
+		System.out.println("DFS2 (0): " + dfs2(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+
+
+
 
 
 
