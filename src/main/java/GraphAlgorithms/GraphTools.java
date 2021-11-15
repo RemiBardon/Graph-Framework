@@ -1,6 +1,16 @@
 package GraphAlgorithms;
 
+import Abstraction.AbstractListGraph;
+import Abstraction.IGraph;
+import Abstraction.IUndirectedGraph;
+import AdjacencyList.DirectedGraph;
+import AdjacencyMatrix.AdjacencyMatrixUndirectedGraph;
+import Nodes.AbstractNode;
+import Nodes.DirectedNode;
+import Nodes.UndirectedNode;
+
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GraphTools {
@@ -13,12 +23,12 @@ public class GraphTools {
 
 	/**
 	 * 
-	 * @param n, the number of vertices
-	 * @param multi, at true if we want a multi-graph
-	 * @param s, at true if the graph is symmetric
-	 * @param c, at true if the graph is connected
-	 * @param seed, the unique seed giving a unique random graph
-	 * @return the generated matrix 
+	 * @param n the number of vertices
+	 * @param multi at true if we want a multi-graph
+	 * @param s at true if the graph is symmetric
+	 * @param c at true if the graph is connected
+	 * @param seed the unique seed giving a unique random graph
+	 * @return the generated matrix
 	 */ 
 	public static int[][] generateGraphData(int n, boolean multi, boolean s, boolean c, int seed){
 		if(_DEBBUG>0){
@@ -85,12 +95,12 @@ public class GraphTools {
 
 	/**
 	 * 
-	 * @param n, the number of vertices
-	 * @param m, the number of edges
-	 * @param multi, at true if we want a multi-graph
-	 * @param s, at true if the graph is symmetric
-	 * @param c, at true if the graph is connexted
-	 * @param seed, the unique seed giving a unique random graph
+	 * @param n the number of vertices
+	 * @param m the number of edges
+	 * @param multi at true if we want a multi-graph
+	 * @param s at true if the graph is symmetric
+	 * @param c at true if the graph is connexted
+	 * @param seed the unique seed giving a unique random graph
 	 * @return the generated matrix
 	 */ 
 	public static int[][] generateGraphData(int n, int m, boolean multi, boolean s, boolean c, int seed){
@@ -237,6 +247,95 @@ public class GraphTools {
 		return mat;
 	}
 
+	public static <Node extends AbstractNode, T> void bfs(
+		final Node start,
+		final Function<Node, T> function,
+		final Function<Node, Set<Node>> nextNodes
+	) {
+		Set<Node> visited = new LinkedHashSet<>();
+		visited.add(start);
+
+		Queue<Node> toVisit = new LinkedList<>();
+		toVisit.add(start);
+
+		Node actual;
+		while ((actual = toVisit.poll()) != null) {
+			function.apply(actual);
+
+			for (final Node next: nextNodes.apply(actual)) {
+				if (!visited.contains(next)) {
+					toVisit.add(next);
+					visited.add(next);
+				}
+			}
+		}
+	}
+
+	public static <T> void bfs(final UndirectedNode start, final Function<UndirectedNode, T> function) {
+		bfs(start, function, node -> node.getNeighbours().keySet());
+	}
+
+	public static List<UndirectedNode> bfs(final UndirectedNode start) {
+		final ArrayList<UndirectedNode> stack = new ArrayList<>();
+		bfs(start, stack::add);
+		return stack;
+	}
+
+	public static <T> void bfs(final DirectedNode start, final Function<DirectedNode, T> function) {
+		bfs(start, function, node -> node.getSuccs().keySet());
+	}
+
+	public static List<DirectedNode> bfs(final DirectedNode start) {
+		final ArrayList<DirectedNode> visitOrder = new ArrayList<>();
+		bfs(start, visitOrder::add);
+		return visitOrder;
+	}
+
+	public static <Node extends AbstractNode, T> void dfs(
+		final Node start,
+		final Function<Node, T> function,
+		final Function<Node, Set<Node>> nextNodes
+	) {
+		Set<Node> visited = new LinkedHashSet<>();
+		visited.add(start);
+
+		Stack<Node> toVisit = new Stack<>();
+		toVisit.push(start);
+
+		Node actual;
+		while (!toVisit.empty()) {
+			actual = toVisit.pop();
+			function.apply(actual);
+
+			for (final Node next: nextNodes.apply(actual)) {
+				if (!visited.contains(next)) {
+					toVisit.push(next);
+					visited.add(next);
+				}
+			}
+		}
+	}
+
+	public static <T> void dfs(final UndirectedNode start, final Function<UndirectedNode, T> function) {
+		dfs(start, function, node -> node.getNeighbours().keySet());
+	}
+
+	public static List<UndirectedNode> dfs(final UndirectedNode start) {
+		final ArrayList<UndirectedNode> stack = new ArrayList<>();
+		dfs(start, stack::add);
+		return stack;
+	}
+
+	public static <T> void dfs(final DirectedNode start, final Function<DirectedNode, T> function) {
+		dfs(start, function, node -> node.getSuccs().keySet());
+	}
+
+	public static List<DirectedNode> dfs(final DirectedNode start) {
+		final ArrayList<DirectedNode> visitOrder = new ArrayList<>();
+		dfs(start, visitOrder::add);
+		return visitOrder;
+	}
+
 	public static void main(String[] args) {
 		final int[][] mat = generateGraphData(10, 20, false, false, false, 100001);
 		System.out.println("Matrix 1:");
@@ -253,6 +352,27 @@ public class GraphTools {
 		final int[][] matVal = generateValuedGraphData(10, false, false, true, true, 100007);
 		System.out.println("\nValued matrix:");
 		afficherMatrix(matVal);
+
+
+		final int[][] mat4 = generateGraphData(10, 30, false, false, true, 100_008);
+		System.out.println("\nMatrix 4:");
+		afficherMatrix(mat4);
+
+		final DirectedGraph g4 = new DirectedGraph(mat4);
+		System.out.println("\nGraph 4:");
+		System.out.println(g4);
+		System.out.println("Nodes: " + g4.getNodes().stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+		final DirectedNode node3 = g4.getNodes().get(3);
+		System.out.println("DFS (3): " + dfs(node3).stream().map(Object::toString).collect(Collectors.joining(", ")));
+		System.out.println("BFS (3): " + bfs(node3).stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+		final DirectedNode node7 = g4.getNodes().get(7);
+		System.out.println("DFS (7): " + dfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
+		System.out.println("BFS (7): " + bfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+
+
 	}
 
 }
