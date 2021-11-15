@@ -55,7 +55,9 @@ public class AdjacencyMatrixUndirectedValuedGraph extends AdjacencyMatrixUndirec
 	@Override
 	public void removeEdge(UndirectedNode x, UndirectedNode y) {
 		super.removeEdge(x, y);
-		// TODO: Complete
+		// Completed
+		matrixCosts[x.getLabel()][y.getLabel()] = 0;
+		matrixCosts[y.getLabel()][x.getLabel()] = 0;
 	}
 
 	/**
@@ -63,7 +65,10 @@ public class AdjacencyMatrixUndirectedValuedGraph extends AdjacencyMatrixUndirec
      */
 	public void addEdge(UndirectedNode x, UndirectedNode y, int cost ) {
 		super.addEdge(x,y);
-		// TODO: Complete
+		// Completed
+		// FIXME: We don't keep the initial cost as the doc comment says
+		matrixCosts[x.getLabel()][y.getLabel()] = cost;
+		matrixCosts[y.getLabel()][x.getLabel()] = cost;
 	}
 
 	public String toString() {

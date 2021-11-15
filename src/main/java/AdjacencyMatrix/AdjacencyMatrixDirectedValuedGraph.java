@@ -52,7 +52,8 @@ public class AdjacencyMatrixDirectedValuedGraph extends AdjacencyMatrixDirectedG
 	@Override
 	public void removeArc(DirectedNode from, DirectedNode to) {
 		super.removeArc(from, to);
-		// TODO: Complete
+		// Completed
+		matrixCosts[from.getLabel()][to.getLabel()] = 0;
 	}
 
 	/**
@@ -60,7 +61,9 @@ public class AdjacencyMatrixDirectedValuedGraph extends AdjacencyMatrixDirectedG
      */
 	public void addArc(DirectedNode from, DirectedNode to, int cost ) {
 		super.addArc(from,to);
-		// TODO: Complete
+		// Completed
+		// FIXME: We don't keep the initial cost as the doc comment says
+		matrix[from.getLabel()][to.getLabel()] = cost;
 	}
 
 	public String toString() {
