@@ -207,6 +207,21 @@ public class GraphTools {
 	}
 
 	/**
+	 * @param m a matrix
+	 */
+	public static int[][] invertMatrix(final int[][] m) {
+		int[][] inverse = new int[m.length][m.length];
+
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m.length; j++) {
+				inverse[j][i] = m[i][j];
+			}
+		}
+
+		return inverse;
+	}
+
+	/**
 	 * @param m A matrix.
 	 * @param digits The number of digits per number
 	 *               (e.g. {@code 1} will show {@code "-5␣0␣5␣10"},
