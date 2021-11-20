@@ -2,6 +2,7 @@ package AdjacencyList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import Abstraction.AbstractListGraph;
 import GraphAlgorithms.GraphTools;
@@ -72,24 +73,26 @@ public class UndirectedGraph extends AbstractListGraph<UndirectedNode> implement
     }
 
     @Override
-    public boolean isEdge(UndirectedNode x, UndirectedNode y) {  
-    	return getNodeOfList(x).getNeighbours().containsKey(getNodeOfList(y));
-        // TODO: Complete
-    	//return true;
+    public boolean isEdge(UndirectedNode from, UndirectedNode to) {
+//      return getNodeOfList(x).getNeighbours().containsKey(getNodeOfList(y));
+        // Completed
+        return from.getNeighbours().containsKey(to);// && to.getPreds().containsKey(from);
     }
 
     @Override
-    public void removeEdge(UndirectedNode x, UndirectedNode y) {
-    	if(isEdge(x,y)){
-    		// TODO: Complete
-    	}
+    public void removeEdge(UndirectedNode from, UndirectedNode to) {
+        // Completed
+        // No need to check `if (this.isEdge(from, to))` since `remove` only removes a key if it is present
+        from.getNeighbours().remove(to);
+        to.getNeighbours().remove(from);
     }
 
     @Override
-    public void addEdge(UndirectedNode x, UndirectedNode y) {
-    	if(!isEdge(x,y)){
-    		// TODO: Complete
-    	}
+    public void addEdge(UndirectedNode from, UndirectedNode to) {
+        if (!isEdge(from, to)) {
+            from.addNeigh(to, 0);
+            from.addNeigh(to, 0);
+        }
     }
 
     //--------------------------------------------------
@@ -118,8 +121,15 @@ public class UndirectedGraph extends AbstractListGraph<UndirectedNode> implement
      */
     @Override
     public int[][] toAdjacencyMatrix() {
-        int[][] matrix = new int[order][order];
-        // TODO: Complete
+        final int[][] matrix = new int[order][order];
+
+        // Completed
+        for (final UndirectedNode node: this.getNodes()) {
+            for (final Map.Entry<UndirectedNode, Integer> entry: node.getNeighbours().entrySet()) {
+                matrix[node.getLabel()][entry.getKey().getLabel()] = entry.getValue();
+            }
+        }
+
         return matrix;
     }
 
@@ -138,12 +148,14 @@ public class UndirectedGraph extends AbstractListGraph<UndirectedNode> implement
     }
 
     public static void main(String[] args) {
-        int[][] mat = GraphTools.generateGraphData(10, 20, false, true, false, 100001);
+        final int[][] mat = GraphTools.generateGraphData(10, 20, false, true, false, 100001);
         GraphTools.afficherMatrix(mat);
-        UndirectedGraph al = new UndirectedGraph(mat);
+        final UndirectedGraph al = new UndirectedGraph(mat);
         System.out.println(al);
-        System.out.println(al.isEdge(new UndirectedNode(2), new UndirectedNode(5)));
+        System.out.println("2–5? " + al.isEdge(new UndirectedNode(2), new UndirectedNode(5)));
+
         // TODO: Complete
+        GraphTools.afficherMatrix(al.toAdjacencyMatrix());
     }
 
 }
