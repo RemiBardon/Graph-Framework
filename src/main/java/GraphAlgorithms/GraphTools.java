@@ -2,6 +2,7 @@ package GraphAlgorithms;
 
 import AdjacencyList.DirectedGraph;
 import AdjacencyList.UndirectedGraph;
+import AdjacencyList.UndirectedValuedGraph;
 import Nodes.AbstractNode;
 import Nodes.DirectedNode;
 import Nodes.UndirectedNode;
@@ -10,6 +11,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import Collection.Triple;
 
 public class GraphTools {
 
@@ -374,6 +376,38 @@ public class GraphTools {
 		}
 	}
 
+	public static List<UndirectedNode> prim(UndirectedGraph g,UndirectedNode start){
+		//Démarrer avec un arbre initial A ayant un seul sommet
+		List<UndirectedNode> exploree = new ArrayList<>();
+		exploree.add(start);
+
+		BinaryHeapEdge tasBinaire = new BinaryHeapEdge();
+
+		UndirectedNode sommmetActuel = start;
+		// Tant que l’arbre n’est pas couvrant, ajouter le sommet
+		//voisin le plus proche ne créant pas de cycle.
+
+		for (int i = 1; i < g.getNbNodes(); i++) {
+
+			// Ajout des voisins du sommmetActuel
+			for (Map.Entry<UndirectedNode, Integer> neighbour : sommmetActuel.getNeighbours().entrySet()) {
+				tasBinaire.insert(sommmetActuel, neighbour.getKey(), neighbour.getValue());
+			}
+
+			Triple<UndirectedNode, UndirectedNode, Integer> currentEdge = tasBinaire.remove();
+			// gestion des cycles
+			while (exploree.contains(currentEdge.getSecond())) {
+				currentEdge = tasBinaire.remove();
+			}
+
+			exploree.add(currentEdge.getSecond());
+			// passage au sommet suivant
+			sommmetActuel = currentEdge.getSecond();
+		}
+		return exploree;
+	}
+
+
 	public static void explorerGraphe(final UndirectedGraph g) {
 		Set<UndirectedNode> atteint = new HashSet<>();
 		for (final UndirectedNode s: g.getNodes()) {
@@ -420,9 +454,11 @@ public class GraphTools {
 	}
 
 	public static void main(String[] args) {
-		final int[][] mat = generateGraphData(10, 20, false, false, false, 100001);
+		/*final int[][] mat = generateGraphData(10, 20, false, false, false, 100001);
 		System.out.println("Matrix 1:");
 		afficherMatrix(mat);
+
+
 
 		final int[][] mat2 = generateGraphData(10, 20, false, false, false, 100002);
 		System.out.println("\nMatrix 2:");
@@ -453,21 +489,30 @@ public class GraphTools {
 		final DirectedNode node7 = g4.getNodes().get(7);
 		System.out.println("DFS (7): " + dfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
 		System.out.println("BFS (7): " + bfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
-
-		final int[][] mat5 = generateGraphData(10, 20, false, true, true, 100_010);
-		final UndirectedGraph g5 = new UndirectedGraph(mat5);
-		System.out.println("\nGraph 5:");
-		System.out.println(g5);
+*/
+		final int[][] mat5 = generateValuedGraphData(5, false, true, true, false, 100010);
+		final UndirectedGraph g5 = new UndirectedValuedGraph(mat5);
+		//System.out.println("\nGraph 5:");
+	//	System.out.println(g5);
 		System.out.println("Nodes: " + g5.getNodes().stream().map(Object::toString).collect(Collectors.joining(", ")));
 
 		afficherMatrix(mat5);
+	//	System.out.println(g5.getNodes().get(0).getWeight());
+		System.out.println(prim(g5,g5.getNodes().get(0)));
+
+
+		/*
 		System.out.println("DFS (0): " + dfs(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
 		System.out.println("BFS (0): " + bfs(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
 		final LinkedHashMap<UndirectedNode, Integer> debuts = new LinkedHashMap<>();
 		final LinkedHashMap<UndirectedNode, Integer> fins = new LinkedHashMap<>();
 		explorerGrapheAvecOrdre(g5, debuts, fins);
 		System.out.println("\nDebuts: " + debuts);
-		System.out.println("Fins: " + fins);
+		System.out.println("Fins: " + fins);*/
+
+		//int[][] matrix = generateGraphData(10, 15, false, true, false, 100001);
+
+
 	}
 
 }
