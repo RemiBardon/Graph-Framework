@@ -1,6 +1,7 @@
 package AdjacencyList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,23 +76,27 @@ public class DirectedGraph extends AbstractListGraph<DirectedNode> implements ID
     @Override
     public boolean isArc(DirectedNode from, DirectedNode to) {
         // Completed
-        return from.getSuccs().containsKey(to);// && to.getPreds().containsKey(from);
+        final DirectedNode fromInThisGraph = this.getNodeOfList(from);
+        final DirectedNode toInThisGraph = this.getNodeOfList(to);
+        return fromInThisGraph.getSuccs().containsKey(toInThisGraph);// && toInThisGraph.getPreds().containsKey(fromInThisGraph);
     }
 
     @Override
     public void removeArc(DirectedNode from, DirectedNode to) {
         // Completed
         // No need check `if (this.isArc(from, to))` since `remove` only removes a key if it is present
-        from.getSuccs().remove(to);
-        to.getPreds().remove(from);
+        this.getNodeOfList(from).getSuccs().remove(to);
+        this.getNodeOfList(to).getPreds().remove(from);
     }
 
     @Override
     public void addArc(DirectedNode from, DirectedNode to) {
         // Completed
         if (!this.isArc(from, to)) {
-            from.addSucc(to, 0);
-            from.addPred(to, 0);
+            final DirectedNode fromInThisGraph = this.getNodeOfList(from);
+            final DirectedNode toInThisGraph = this.getNodeOfList(to);
+            fromInThisGraph.addSucc(toInThisGraph, 0);
+            toInThisGraph.addPred(fromInThisGraph, 0);
         }
     }
 
@@ -137,7 +142,38 @@ public class DirectedGraph extends AbstractListGraph<DirectedNode> implements ID
     @Override
     public IDirectedGraph computeInverse() {
         // Completed
-        return new DirectedGraph(GraphTools.invertMatrix(this.toAdjacencyMatrix()));
+        final int n = this.getNbNodes();
+        int[] NODE = new int[n+1];
+        int[] SUCC = new int[this.m];
+        int i = 0;
+        int j = 0;
+
+        NODE[0] = 0;
+        for (final DirectedNode node: this.nodes) {
+            for (final DirectedNode s: node.getSuccs().keySet()) {
+                SUCC[j] = s.getLabel();
+                j++;
+            }
+            i++;
+            NODE[i] = j;
+        }
+//      System.out.println("NODE=" + Arrays.toString(NODE));
+//      System.out.println("SUCC=" + Arrays.toString(SUCC));
+
+        final DirectedGraph inverse = new DirectedGraph(new int[this.getNbNodes()][this.getNbNodes()]);
+
+        for (int x = 0; x < n; x++) {
+            for (int y = 0; y < n; y++) {
+                for (int k = NODE[y]; k < NODE[y+1]; k++) {
+//                  System.out.println("SUCC[" + k + "\t]=" + SUCC[k] + ", \tx=" + x + ", \ty=" + y);
+                    if (SUCC[k] == x) {
+                        inverse.addArc(this.makeNode(x), this.makeNode(y));
+                    }
+                }
+            }
+        }
+
+        return inverse;
     }
     
     @Override

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import Abstraction.AbstractListGraph;
 import GraphAlgorithms.GraphTools;
+import Nodes.DirectedNode;
 import Nodes.UndirectedNode;
 import Abstraction.IUndirectedGraph;
 
@@ -83,15 +84,17 @@ public class UndirectedGraph extends AbstractListGraph<UndirectedNode> implement
     public void removeEdge(UndirectedNode from, UndirectedNode to) {
         // Completed
         // No need to check `if (this.isEdge(from, to))` since `remove` only removes a key if it is present
-        from.getNeighbours().remove(to);
-        to.getNeighbours().remove(from);
+        this.getNodeOfList(from).getNeighbours().remove(to);
+        this.getNodeOfList(to).getNeighbours().remove(from);
     }
 
     @Override
     public void addEdge(UndirectedNode from, UndirectedNode to) {
         if (!isEdge(from, to)) {
-            from.addNeigh(to, 0);
-            from.addNeigh(to, 0);
+            final UndirectedNode fromInThisGraph = this.getNodeOfList(from);
+            final UndirectedNode toInThisGraph = this.getNodeOfList(to);
+            fromInThisGraph.addNeigh(toInThisGraph, 0);
+            toInThisGraph.addNeigh(fromInThisGraph, 0);
         }
     }
 

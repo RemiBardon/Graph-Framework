@@ -42,8 +42,10 @@ public class DirectedValuedGraph extends DirectedGraph {
     public void addArc(DirectedNode from, DirectedNode to, int cost) {
         // Completed
         if (!this.isArc(from, to)) {
-            from.addSucc(to, cost);
-            from.addPred(to, cost);
+            final DirectedNode fromInThisGraph = this.getNodeOfList(from);
+            final DirectedNode toInThisGraph = this.getNodeOfList(to);
+            fromInThisGraph.addSucc(toInThisGraph, cost);
+            toInThisGraph.addPred(fromInThisGraph, cost);
         }
     }
 

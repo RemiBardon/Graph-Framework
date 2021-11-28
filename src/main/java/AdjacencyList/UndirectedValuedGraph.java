@@ -42,8 +42,10 @@ public class UndirectedValuedGraph extends UndirectedGraph{
     public void addEdge(UndirectedNode from, UndirectedNode to, int cost) {
         // Completed
         if (!this.isEdge(from, to)) {
-            from.addNeigh(to, cost);
-            from.addNeigh(to, cost);
+            final UndirectedNode fromInThisGraph = this.getNodeOfList(from);
+            final UndirectedNode toInThisGraph = this.getNodeOfList(to);
+            fromInThisGraph.addNeigh(toInThisGraph, cost);
+            toInThisGraph.addNeigh(fromInThisGraph, cost);
         }
     }
 
