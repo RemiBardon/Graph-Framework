@@ -55,7 +55,7 @@ public class BinaryHeapEdge {
 	 */
 	public Triple<UndirectedNode,UndirectedNode,Integer> remove() {
 		// Completed
-		Triple<UndirectedNode, UndirectedNode, Integer> root = this.binh.get(0);
+		Triple<UndirectedNode, UndirectedNode, Integer> root = new Triple<>(this.binh.get(0).getFirst(), this.binh.get(0).getSecond(), this.binh.get(0).getThird());
 
 		// On l’échange (swap) avec la
 		// dernière et on l’enlève du tas

@@ -399,9 +399,9 @@ public class GraphTools {
 				currentEdge = tasBinaire.remove();
 			}
 
-			exploree.add(sommmetActuel);
 			// passage au sommet suivant
 			sommmetActuel = currentEdge.getSecond();
+			exploree.add(sommmetActuel);
 		}
 
 		return exploree;
@@ -495,8 +495,7 @@ public class GraphTools {
 		//System.out.println("\nGraph 5:");
 	//	System.out.println(g5);
 		System.out.println("Nodes: " + g5.getNodes().stream().map(Object::toString).collect(Collectors.joining(", ")));
-
-		afficherMatrix(mat5);
+		System.out.println(matrixToString(mat5, 2, 0));
 	//	System.out.println(g5.getNodes().get(0).getWeight());
 		System.out.println(prim(g5,g5.getNodes().get(0)));
 
