@@ -454,15 +454,15 @@ public class GraphTools {
 	}
 
 	public static void main(String[] args) {
-		/*final int[][] mat = generateGraphData(10, 20, false, false, false, 100001);
+		final int[][] mat = generateGraphData(10, 20, false, false, false, 100001);
 		System.out.println("Matrix 1:");
 		afficherMatrix(mat);
-
 
 
 		final int[][] mat2 = generateGraphData(10, 20, false, false, false, 100002);
 		System.out.println("\nMatrix 2:");
 		afficherMatrix(mat2);
+
 
 		final int[][] mat3 = generateGraphData(10, 20, false, true, true, 100003);
 		System.out.println("\nMatrix 3:");
@@ -489,29 +489,34 @@ public class GraphTools {
 		final DirectedNode node7 = g4.getNodes().get(7);
 		System.out.println("DFS (7): " + dfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
 		System.out.println("BFS (7): " + bfs(node7).stream().map(Object::toString).collect(Collectors.joining(", ")));
-*/
-		final int[][] mat5 = generateValuedGraphData(5, false, true, true, false, 100010);
+
+
+		final int[][] mat5 = generateGraphData(10, 20, false, true, true, 100_010);
 		final UndirectedGraph g5 = new UndirectedValuedGraph(mat5);
-		//System.out.println("\nGraph 5:");
-	//	System.out.println(g5);
+		System.out.println("\nGraph 5:");
+		System.out.println(g5);
 		System.out.println("Nodes: " + g5.getNodes().stream().map(Object::toString).collect(Collectors.joining(", ")));
+
 		System.out.println(matrixToString(mat5, 2, 0));
-	//	System.out.println(g5.getNodes().get(0).getWeight());
-		System.out.println(prim(g5,g5.getNodes().get(0)));
-
-
-		/*
 		System.out.println("DFS (0): " + dfs(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
 		System.out.println("BFS (0): " + bfs(g5.getNodes().get(0)).stream().map(Object::toString).collect(Collectors.joining(", ")));
 		final LinkedHashMap<UndirectedNode, Integer> debuts = new LinkedHashMap<>();
 		final LinkedHashMap<UndirectedNode, Integer> fins = new LinkedHashMap<>();
 		explorerGrapheAvecOrdre(g5, debuts, fins);
 		System.out.println("\nDebuts: " + debuts);
-		System.out.println("Fins: " + fins);*/
-
-		//int[][] matrix = generateGraphData(10, 15, false, true, false, 100001);
+		System.out.println("Fins: " + fins);
 
 
+		final int[][] mat6 = generateValuedGraphData(5, false, true, true, false, 100_010);
+		final UndirectedGraph g6 = new UndirectedValuedGraph(mat6);
+		System.out.println("\nGraph 6: " + g6);
+		System.out.println("Nodes: " + g6.getNodes().stream().map(Object::toString).collect(Collectors.joining(", ")));
+		System.out.println(matrixToString(mat6, 2, 0));
+//		System.out.println(g6.getNodes().get(0).getWeight());
+		System.out.println("PRIM: " + prim(g6, g6.getNodes().get(0)));
+
+
+//		int[][] matrix = generateGraphData(10, 15, false, true, false, 100001);
 	}
 
 }
