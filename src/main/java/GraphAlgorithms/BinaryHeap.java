@@ -1,6 +1,9 @@
 package GraphAlgorithms;
 
 
+import Collection.Triple;
+import Nodes.UndirectedNode;
+
 public class BinaryHeap {
 
     private int[] nodes;
@@ -29,11 +32,39 @@ public class BinaryHeap {
 
     public void insert(int element) {
     	// TODO: Complete
+        int i = this.pos;
+        this.nodes[i] = element;
+
+        int father = (i - 1) / 2;
+        // percolate-up
+        while ((father  >= 0 && this.nodes[father] > element)) {
+            this.swap(father, i);
+            i = father;
+        }
+        this.pos++;
+
     }
 
     public int remove() {
     	// TODO: Complete
-    	return 0;
+        // On l’échange (swap) avec la
+        //dernière et on l’enlève du tas
+        int i = 0;
+        int lastIndex = this.pos-1;
+        this.swap(i, lastIndex);
+        this.nodes[lastIndex] = Integer.MAX_VALUE;
+
+        int bestChild = this.getBestChildPos(i) ;
+
+        // percolate-down pour faire descendre récursivement la nouvelle valeur à la racine avec le fils de plus
+        //petite valeur
+        //System.out.println(this.binh.get(bestChild-1).getThird());
+        while (bestChild  != Integer.MAX_VALUE && this.nodes[bestChild-1] < this.nodes[i]) {
+            swap(i, bestChild);
+            i = bestChild;
+            bestChild = this.getBestChildPos(i);
+        }
+        return this.pos--;
     }
 
     private int getBestChildPos(int src) {
@@ -41,7 +72,19 @@ public class BinaryHeap {
             return Integer.MAX_VALUE;
         } else {
         	// TODO: Complete
-        	return Integer.MAX_VALUE;
+            int leftChildPos = 2 * src + 1;
+            int rightChildPos = 2 * src + 2;
+
+            if (rightChildPos >= this.pos) {
+                return leftChildPos;
+            }
+
+            if(this.nodes[leftChildPos] < this.nodes[rightChildPos]){
+                return leftChildPos;
+            }
+            else {
+                return rightChildPos;
+            }
         }
     }
 
@@ -54,7 +97,7 @@ public class BinaryHeap {
 	 */	
     private boolean isLeaf(int src) {
     	// TODO: Complete
-    	return false;
+        return 2 * src + 1 >= this.pos;
     }
 
     private void swap(int father, int child) {

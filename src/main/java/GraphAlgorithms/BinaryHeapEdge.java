@@ -36,7 +36,7 @@ public class BinaryHeapEdge {
 		int i = this.binh.size();
 		this.binh.add(i, element);
 
-		int father = this.getParentPos(i);
+		int father = (i - 1) / 2;
 		// percolate-up
 		while ((father  >= 0 && this.binh.get(father).getThird() > element.getThird())) {
 			this.swap(father, i);
@@ -44,9 +44,7 @@ public class BinaryHeapEdge {
 			element = this.binh.get(i);
 		}
 	}
-	private int getParentPos(int elementIndex) {
-		return (elementIndex - 1) / 2;
-	}
+
 
 	/**
 	 * Removes the root edge in the binary heap, and swap the edges to keep a valid binary heap
@@ -69,7 +67,7 @@ public class BinaryHeapEdge {
 		// percolate-down pour faire descendre récursivement la nouvelle valeur à la racine avec le fils de plus
 		//petite valeur
 		//System.out.println(this.binh.get(bestChild-1).getThird());
-		while (bestChild  != Integer.MAX_VALUE && this.binh.get(bestChild-1).getThird() < this.binh.get(i).getThird()) {
+		while (bestChild  != Integer.MAX_VALUE && this.binh.get(bestChild).getThird() < this.binh.get(i).getThird()) {
 			swap(i, bestChild);
 			i = bestChild;
 			bestChild = this.getBestChildPos(i);
