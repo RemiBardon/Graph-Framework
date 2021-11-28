@@ -11,9 +11,11 @@ public class BinaryHeapEdge {
 
 	/**
 	 * A list structure for a faster management of the heap by indexing
-	 *
+	 * First node is the he leading node of the edge.
+	 * Second node is trailing node of the edge.
+	 * The integer is the weight of the edge.
 	 */
-	private  List<Triple<UndirectedNode,UndirectedNode,Integer>> binh;
+	private List<Triple<UndirectedNode,UndirectedNode,Integer>> binh;
 
 	public BinaryHeapEdge() {
 		this.binh = new ArrayList<>();
@@ -31,7 +33,7 @@ public class BinaryHeapEdge {
 	 * @param val the edge weight
 	 */
 	public void insert(UndirectedNode from, UndirectedNode to, int val) {
-		// TODO: Complete
+		// Completed
 		Triple<UndirectedNode, UndirectedNode, Integer> element = new Triple<>(from, to, val);
 		int i = this.binh.size();
 		this.binh.add(i, element);
@@ -49,31 +51,29 @@ public class BinaryHeapEdge {
 	/**
 	 * Removes the root edge in the binary heap, and swap the edges to keep a valid binary heap
 	 *
-	 * @return the edge with the minimal value (root of the binary heap)
-	 *
+	 * @return the edge with the minimal weight (root of the binary heap)
 	 */
 	public Triple<UndirectedNode,UndirectedNode,Integer> remove() {
-		// TODO: Complete
-		Triple<UndirectedNode, UndirectedNode, Integer> root = new Triple<UndirectedNode,UndirectedNode,Integer>(this.binh.get(0).getFirst(), this.binh.get(0).getSecond(), this.binh.get(0).getThird());
+		// Completed
+		Triple<UndirectedNode, UndirectedNode, Integer> root = this.binh.get(0);
 
 		// On l’échange (swap) avec la
-		//dernière et on l’enlève du tas
+		// dernière et on l’enlève du tas
 		int lastIndex = binh.size() - 1;
 		int i = 0;
 		this.swap(i, lastIndex);
 		this.binh.get(lastIndex).setThird(Integer.MAX_VALUE);
 
-		int bestChild = this.getBestChildPos(i) ;
+		int bestChild = this.getBestChildPos(i);
 		// percolate-down pour faire descendre récursivement la nouvelle valeur à la racine avec le fils de plus
-		//petite valeur
-		//System.out.println(this.binh.get(bestChild-1).getThird());
-		while (bestChild  != Integer.MAX_VALUE && this.binh.get(bestChild).getThird() < this.binh.get(i).getThird()) {
+		// petite valeur
+		// System.out.println(this.binh.get(bestChild-1).getThird());
+		while (bestChild != Integer.MAX_VALUE && this.binh.get(bestChild).getThird() < this.binh.get(i).getThird()) {
 			swap(i, bestChild);
 			i = bestChild;
 			bestChild = this.getBestChildPos(i);
 		}
 
-		this.binh.remove(lastIndex);
 		return root;
 
 	}
@@ -106,7 +106,7 @@ public class BinaryHeapEdge {
 	}
 
 	private boolean isLeaf(int src) {
-		// TODO: Complete
+		// Completed
 		return 2 * src + 1 >= this.binh.size();
 	}
 

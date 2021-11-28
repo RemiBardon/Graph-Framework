@@ -1,9 +1,6 @@
 package GraphAlgorithms;
 
 
-import Collection.Triple;
-import Nodes.UndirectedNode;
-
 public class BinaryHeap {
 
     private int[] nodes;
@@ -31,7 +28,7 @@ public class BinaryHeap {
     }
 
     public void insert(int element) {
-    	// TODO: Complete
+        // Completed
         int i = this.pos;
         this.nodes[i] = element;
 
@@ -42,13 +39,12 @@ public class BinaryHeap {
             i = father;
         }
         this.pos++;
-
     }
 
     public int remove() {
-    	// TODO: Complete
+        // Completed
         // On l’échange (swap) avec la
-        //dernière et on l’enlève du tas
+        // dernière et on l’enlève du tas
         int i = 0;
         int lastIndex = this.pos-1;
         this.swap(i, lastIndex);
@@ -57,8 +53,7 @@ public class BinaryHeap {
         int bestChild = this.getBestChildPos(i) ;
 
         // percolate-down pour faire descendre récursivement la nouvelle valeur à la racine avec le fils de plus
-        //petite valeur
-        //System.out.println(this.binh.get(bestChild-1).getThird());
+        // petite valeur
         while (bestChild  != Integer.MAX_VALUE && this.nodes[bestChild-1] < this.nodes[i]) {
             swap(i, bestChild);
             i = bestChild;
@@ -71,7 +66,7 @@ public class BinaryHeap {
         if (isLeaf(src)) { // the leaf is a stopping case, then we return a default value
             return Integer.MAX_VALUE;
         } else {
-        	// TODO: Complete
+            // Completed
             int leftChildPos = 2 * src + 1;
             int rightChildPos = 2 * src + 2;
 
@@ -79,10 +74,9 @@ public class BinaryHeap {
                 return leftChildPos;
             }
 
-            if(this.nodes[leftChildPos] < this.nodes[rightChildPos]){
+            if (this.nodes[leftChildPos] < this.nodes[rightChildPos]) {
                 return leftChildPos;
-            }
-            else {
+            } else {
                 return rightChildPos;
             }
         }
@@ -96,7 +90,7 @@ public class BinaryHeap {
 	 * 
 	 */	
     private boolean isLeaf(int src) {
-    	// TODO: Complete
+        // Completed
         return 2 * src + 1 >= this.pos;
     }
 
@@ -151,7 +145,8 @@ public class BinaryHeap {
             jarjarBin.insert(rand);            
             k--;
         }
-     // TODO: Complete
+
+        // TODO: Complete
         System.out.println("\n" + jarjarBin);
         System.out.println(jarjarBin.test());
     }

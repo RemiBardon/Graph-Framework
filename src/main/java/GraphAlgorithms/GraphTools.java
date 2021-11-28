@@ -383,27 +383,27 @@ public class GraphTools {
 
 		BinaryHeapEdge tasBinaire = new BinaryHeapEdge();
 
-		UndirectedNode sommmetActuel = start;
 		// Tant que l’arbre n’est pas couvrant, ajouter le sommet
-		//voisin le plus proche ne créant pas de cycle.
-
+		// voisin le plus proche ne créant pas de cycle.
+		UndirectedNode sommmetActuel = start;
 		for (int i = 1; i < g.getNbNodes(); i++) {
-
 			// Ajout des voisins du sommmetActuel
 			for (Map.Entry<UndirectedNode, Integer> neighbour : sommmetActuel.getNeighbours().entrySet()) {
 				tasBinaire.insert(sommmetActuel, neighbour.getKey(), neighbour.getValue());
 			}
 
+			// On prend l'arête de poids minimal
 			Triple<UndirectedNode, UndirectedNode, Integer> currentEdge = tasBinaire.remove();
 			// gestion des cycles
 			while (exploree.contains(currentEdge.getSecond())) {
 				currentEdge = tasBinaire.remove();
 			}
 
-			exploree.add(currentEdge.getSecond());
 			// passage au sommet suivant
 			sommmetActuel = currentEdge.getSecond();
+			exploree.add(sommmetActuel);
 		}
+
 		return exploree;
 	}
 
