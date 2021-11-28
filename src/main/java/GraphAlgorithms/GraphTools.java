@@ -399,9 +399,9 @@ public class GraphTools {
 				currentEdge = tasBinaire.remove();
 			}
 
+			exploree.add(sommmetActuel);
 			// passage au sommet suivant
 			sommmetActuel = currentEdge.getSecond();
-			exploree.add(sommmetActuel);
 		}
 
 		return exploree;
