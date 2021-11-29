@@ -172,13 +172,13 @@ public class GraphTools {
 	 * @param neg, at true if the graph has negative weights 
 	 * @param seed, the unique seed giving a unique random graph
 	 */
-	public static int[][] generateValuedGraphData(int n, boolean multi, boolean s, boolean c, boolean neg, int seed){
+	public static int[][] generateValuedGraphData(int n, int m, boolean multi, boolean s, boolean c, boolean neg, int seed){
 		if(_DEBBUG>0){
 			System.out.println("\n ------------------------------------------------");
 			System.out.println("<< Lancement de la méthode generateValuedGraphData >>");
 		}
 
-		int[][] mat = generateGraphData(n, multi, s, c, seed);
+		int[][] mat = generateGraphData(n, m, multi, s, c, seed);
 		int [][] matValued = new int[mat.length][mat.length];
 		Random rand = new Random(seed);
 		int valNeg = 0;
@@ -201,9 +201,13 @@ public class GraphTools {
 		return matValued;
 	}
 
-	/**
-	 * @param m a matrix
-	 */
+	public static int[][] generateValuedGraphData(int n, boolean multi, boolean s, boolean c, boolean neg, int seed) {
+		return generateValuedGraphData(n, n, multi, s, c, neg, seed);
+	}
+
+		/**
+         * @param m a matrix
+         */
 	public static void afficherMatrix(final int[][] m) {
 		System.out.println(matrixToString(m, 1, 0));
 	}
@@ -381,6 +385,7 @@ public class GraphTools {
 		List<UndirectedNode> exploree = new ArrayList<>();
 		exploree.add(start);
 
+
 		BinaryHeapEdge tasBinaire = new BinaryHeapEdge();
 
 		// Tant que l’arbre n’est pas couvrant, ajouter le sommet
@@ -405,6 +410,55 @@ public class GraphTools {
 		}
 
 		return exploree;
+	}
+
+	public static int[] dijkstra(int s, int[][] cout) {
+		// Initialisation
+		final int n = cout.length;
+		// Tableau des sommets atteints
+		boolean[] b = new boolean[n];
+		Arrays.fill(b, false);
+//		System.out.println("B=" + Arrays.toString(b));
+		// Tableau des coûts
+		int[] v = new int[n];
+		Arrays.fill(v, Integer.MAX_VALUE);
+		v[s] = 0;
+//		System.out.println("V=" + Arrays.toString(v));
+		// Tableau des prédécesseurs
+		int[] p = new int[n];
+		Arrays.fill(p, 0);
+		p[s] = 1;
+//		System.out.println("P=" + Arrays.toString(p));
+
+		// Choix du sommet de départ
+		int x = s;
+		int visited = 1;
+		// Tant qu’il reste un sommet non atteint
+		while (visited < n) {
+			// Recherche du sommet x non atteint de coût minimal
+			int min = Integer.MAX_VALUE;
+			for (int y=0; y<n; y++) {
+				if (!b[y] && v[y]<min) {
+					x = y;
+					min = v[y];
+				}
+			}
+
+			// Mise à jour des successeurs non fixés de x
+			if (min < Integer.MAX_VALUE) {
+				b[x] = true;
+				for (int y=0; y<n; y++) {
+					if ((!b[y]) && (cout[x][y] >= 0) && (cout[x][y] < v[y]) && (v[x]+cout[x][y] < v[y])) {
+						v[y] = v[x]+cout[x][y];
+						p[y] = x;
+					}
+				}
+			}
+
+			visited++;
+		}
+
+		return v;
 	}
 
 
@@ -517,6 +571,19 @@ public class GraphTools {
 
 
 //		int[][] matrix = generateGraphData(10, 15, false, true, false, 100001);
+
+		final int[][] mat7 = generateValuedGraphData(10, 20, false, false, false, false, 100_008);
+		System.out.println("\nMatrix 7:");
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
+				if (mat7[x][y] == 0) {
+					mat7[x][y] = -1;
+				}
+			}
+		}
+		System.out.println(matrixToString(mat7, 2, 2));
+		System.out.println("DIJKSTRA (0): " + Arrays.toString(dijkstra(0, mat7)));
+		System.out.println("DIJKSTRA (4): " + Arrays.toString(dijkstra(4, mat7)));
 	}
 
 }
