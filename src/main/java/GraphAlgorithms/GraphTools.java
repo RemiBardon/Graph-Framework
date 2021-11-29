@@ -1,6 +1,7 @@
 package GraphAlgorithms;
 
 import AdjacencyList.DirectedGraph;
+import AdjacencyList.DirectedValuedGraph;
 import AdjacencyList.UndirectedGraph;
 import AdjacencyList.UndirectedValuedGraph;
 import Nodes.AbstractNode;
@@ -12,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import Collection.Triple;
+
+import static java.lang.Math.min;
 
 public class GraphTools {
 
@@ -461,6 +464,30 @@ public class GraphTools {
 		return v;
 	}
 
+	public static int[] bellman(final int s, final DirectedGraph G) {
+		// Initialisation
+		final int n = G.getNbNodes();
+		// Tableau des sommets atteints
+		int[] dist = new int[n];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		dist[s] = 0;
+//		System.out.println("dist=" + Arrays.toString(dist));
+
+		// Tant qu’il reste un sommet non atteint
+		for (int k = 0; k < n; k++) {
+			final int[] distkmoins1 = dist;
+			for (DirectedNode v: G.getNodes()) {
+				int d = distkmoins1[v.getLabel()];
+				for (DirectedNode u: v.getPreds().keySet()) {
+					d = min(d, distkmoins1[u.getLabel()] + u.getSuccs().get(v));
+				}
+				dist[v.getLabel()] = d;
+			}
+		}
+
+		return dist;
+	}
+
 
 	public static void explorerGraphe(final UndirectedGraph g) {
 		Set<UndirectedNode> atteint = new HashSet<>();
@@ -577,13 +604,29 @@ public class GraphTools {
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 10; y++) {
 				if (mat7[x][y] == 0) {
-					mat7[x][y] = -1;
+					mat7[x][y] = Integer.MAX_VALUE;
 				}
 			}
 		}
-		System.out.println(matrixToString(mat7, 2, 2));
+		System.out.println(matrixToString(mat7, 10, 2));
 		System.out.println("DIJKSTRA (0): " + Arrays.toString(dijkstra(0, mat7)));
 		System.out.println("DIJKSTRA (4): " + Arrays.toString(dijkstra(4, mat7)));
+
+		final int[][] mat8 = generateValuedGraphData(10, 20, false, false, false, false, 100_008);
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
+				if (mat8[x][y] == 0) {
+					mat8[x][y] = Integer.MAX_VALUE;
+				}
+			}
+		}
+		System.out.println("\nMatrix 8:");
+		System.out.println(matrixToString(mat8, 10, 2));
+		final DirectedGraph g8 = new DirectedValuedGraph(mat8);
+		System.out.println("\nGraph 8:");
+		System.out.println(g8);
+		System.out.println("BELLMAN (0): " + Arrays.toString(bellman(0, g8)));
+		System.out.println("BELLMAN (4): " + Arrays.toString(bellman(4, g8)));
 	}
 
 }
